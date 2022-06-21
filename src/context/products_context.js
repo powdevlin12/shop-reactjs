@@ -1,7 +1,7 @@
-import axios from 'axios'
-import React, { useContext, useEffect, useReducer } from 'react'
-import reducer from '../reducers/products_reducer'
-import { products_url as url } from '../utils/constants'
+import axios from "axios";
+import React, { useContext, useEffect, useReducer } from "react";
+import reducer from "../reducers/products_reducer";
+import { products_url as url } from "../utils/constants";
 import {
   SIDEBAR_OPEN,
   SIDEBAR_CLOSE,
@@ -11,30 +11,51 @@ import {
   GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
-} from '../actions'
+} from "../actions";
 
-const initialState = {isOpenSidebar: false}
+const initialState = {
+  isOpenSidebar: false,
+  products_loading: false,
+  products_error: false,
+  products : [],
+  featured_products : []
+};
 
-const ProductsContext = React.createContext()
+const ProductsContext = React.createContext();
 
 export const ProductsProvider = ({ children }) => {
-  const [state,dispatch] = useReducer(reducer,initialState)
-  const openSidebar = () =>
-  {
-    dispatch({type:SIDEBAR_OPEN})
-  }
-  const closeSidebar = () =>
-  {
-    console.log('close')
-    dispatch({type:SIDEBAR_CLOSE})
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const openSidebar = () => {
+    dispatch({ type: SIDEBAR_OPEN });
+  };
+  const closeSidebar = () => {
+    console.log("close");
+    dispatch({ type: SIDEBAR_CLOSE });
+  };
+
+  const fetchData = async (url) => {
+    dispatch({type : GET_PRODUCTS_BEGIN})
+    try {
+      const response = await axios.get(url);
+      const products = await response.data;
+      console.log(response,products)
+      dispatch({type : GET_PRODUCTS_SUCCESS,payload : products})
+    } catch (error) {
+      dispatch({type : GET_PRODUCTS_ERROR})
+    }
+  };
+
+  useEffect(() => {
+    fetchData(url);
+  }, []);
+
   return (
-    <ProductsContext.Provider value={{...state,openSidebar,closeSidebar}}>
+    <ProductsContext.Provider value={{ ...state, openSidebar, closeSidebar }}>
       {children}
     </ProductsContext.Provider>
-  )
-}
+  );
+};
 // make sure use
 export const useProductsContext = () => {
-  return useContext(ProductsContext)
-}
+  return useContext(ProductsContext);
+};
