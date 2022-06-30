@@ -28,7 +28,7 @@ const cart_reducer = (state, action) => {
           return cartItem;
         }
       })
-      return {...state,cart : tempCart}
+      return { ...state, cart: tempCart }
     } else {
       // tạo ra một item trong cart với id = id + color
       const newItem = {
@@ -45,6 +45,49 @@ const cart_reducer = (state, action) => {
 
     }
   }
+  if (action.type === REMOVE_CART_ITEM) {
+    let tempCart = [...state.cart]
+    tempCart = tempCart.filter((p) => p.id !== action.payload)
+    return { ...state, cart: tempCart }
+  }
+  if (action.type === CLEAR_CART) {
+    return { ...state, cart: [] }
+  }
+  if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
+    const { id, value } = action.payload;
+    let tempCart = [...state.cart];
+
+    tempCart = tempCart.map((item) => {
+      if(item.id === id)
+      {
+        if(value === 'inc')
+        {
+          let newAmount = item.amount + 1;
+          if(newAmount > item.max)
+          {
+            newAmount = item.max
+          }
+        return {...item,amount : newAmount}
+        }
+        if(value === 'dec')
+        {
+          let newAmount = item.amount - 1;
+          if(newAmount < 1)
+          {
+            newAmount = 1
+          }
+        return {...item,amount : newAmount}
+        }
+      }else
+      {
+        return item;
+      }
+    }
+    )
+
+    return { ...state, cart: tempCart }
+  }
+
   throw new Error(`No Matching "${action.type}" - action type`)
 }
 

@@ -41,17 +41,18 @@ export const CartProvider = ({ children }) => {
   // remove Item
   const removeItem = (id) =>
   {
-
+    dispatch({type: REMOVE_CART_ITEM,payload: id})
   }
   // toggle Amount
-  const toggleAmount = (id) =>
+  const toggleAmount = (id,value) =>
   {
-
+    console.log(id,value)
+      dispatch({type:TOGGLE_CART_ITEM_AMOUNT,payload:{id,value}})
   }
-  // clear Cart
+  // clear Cart 
   const clearCart = ()=>
   {
-
+    dispatch({type: CLEAR_CART})
   }
   return (
     <CartContext.Provider value={{...state,addToCart,removeItem,toggleAmount,clearCart}}>{children}</CartContext.Provider>
