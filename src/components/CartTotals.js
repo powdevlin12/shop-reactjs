@@ -4,11 +4,14 @@ import { useCartContext } from '../context/cart_context'
 import { useUserContext } from '../context/user_context'
 import { formatPrice } from '../utils/helpers'
 import { Link } from 'react-router-dom'
+import ModalBuy from './ModalBuy'
 
 const CartTotals = () => {
   const {total_amount,shipping} = useCartContext()
   console.log(total_amount,shipping)
 return <Wrapper>
+      <ModalBuy />
+
     <div>
       <article>
         <h5>subtotals : <span>{formatPrice(total_amount)}</span></h5>
