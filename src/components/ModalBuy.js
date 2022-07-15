@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useCartContext } from "../context/cart_context";
 
-const ModalBuy = () => {
+const ModalBuy = ({isShowModal,setIsShowModal}) => {
+  const {clearCart} = useCartContext();
+
+  const handleFinish =  () =>
+  {
+    clearCart();
+
+  }
+  if(isShowModal)
   return (
-    <Wrapper>
+   <Wrapper>
       <Modal>
         <h2>Do you sure to buy ?</h2>
         <div className="buy__choose">
-          <Button>Okey</Button>
-          <Button className="buy__choose--no">No, Thanks</Button>
+          <Button onClick={handleFinish}>Okey</Button>
+          <Button className="buy__choose--no" onClick={()=>setIsShowModal(false)}>No, Thanks</Button>
         </div>
       </Modal>
     </Wrapper>
-  );
+  ) 
+  else
+    return <></>
 };
 const Wrapper = styled.section`
   background-color: #617d98a1;

@@ -16,7 +16,7 @@ const Nav = () => {
       <div className="nav-center">
         <div className="nav-header">
           <Link to="/">
-            <img src={logo} alt="logo" />
+            <h1>TDShop</h1>
           </Link>
           <button className="nav-toggle" onClick={openSidebar}>
             <FaBars />
@@ -56,6 +56,9 @@ const NavContainer = styled.nav`
     img {
       width: 175px;
       margin-left: -15px;
+    }
+    h1{
+      color: black;
     }
   }
   .nav-toggle {
